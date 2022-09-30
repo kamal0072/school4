@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hello web socket!!!!</h1>
+    <h2 id="ct">The current data!!!</h2>
+    <script>
+        var ws=new WebSocket(("ws://127.0.0.1:8000/web_s/sync_con/"))
+
+        ws.onopen=function() {
+            console.log("WebSocket connection open")
+            ws.send('Hello server!! i am client!!')
+        }
+
+        //ws.onmessage= function(event){
+        //    console.log("Message Recieved from server",event.data)
+        //    document.getElementById('ct').innerText=event.data
+        //}
+
+        ws.onmessage= function(event){
+            console.log('Event--:',event)
+            console.log("Message Recieved from server",event.data)
+            
+            console.log("type of event data before parsed:=",typeof(event.data))
+            var data=JSON.parse(event.data)
+            console.log("Parsed Data into Js objects: ",data)
+            console.log("type of event data after parsed: ",typeof(data))
+
+            document.getElementById('ct').innerText=data.count
+        }
+
+        ws.onerrror= function(event){
+            console.log("WebSocket error found!!1",event)
+        }
+
+        ws.onclose= function(event){
+            console.log("WebSocket connection closed!!",event)
+        }
+    </script>
+</body>
+</html>
